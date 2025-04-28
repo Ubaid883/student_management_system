@@ -1,4 +1,5 @@
-#Student Management System (Python + PyMySQL)
+
+<h1 align="center">Student Management System (Python + PyMySQL)</h1>
 
 ## 👨‍💻 Author
 - Developed by **Ubaid**
