@@ -6,19 +6,30 @@ conn = sql.connect(host='localhost', user='root',password='',database='Student_m
 cur = conn.cursor()
 
 # Create Table 
-cur.execute('''CREATE TABLE IF NOT EXISTS 
-            Student(id INTEGER PRIMARY KEY NOT NULL, 
-            student_name VARCHAR(255) NOT NULL,
-            student_class VARCHAR(255) NOT NULL, 
-            student_depart VARCHAR(255) NOT NULL,
-            gender VARCHAR(255) NOT NULL, 
-            phone_number VARCHAR(255) NOT NULL)''')
+cur.execute('''
+    CREATE TABLE IF NOT EXISTS Student (
+        id INTEGER PRIMARY KEY AUTO_INCREMENT,
+        student_name VARCHAR(255) NOT NULL,
+        student_class VARCHAR(255) NOT NULL,
+        student_depart VARCHAR(255) NOT NULL,
+        gender VARCHAR(255) NOT NULL,
+        phone_number VARCHAR(255) NOT NULL
+    )
+''')
 
-def Add_Student():
-    pass
-
+def Add_Student(s_name,s_class,s_dep,s_gender, s_pho):
+    try:
+        cur.execute("INSERT INTO Student (student_name,student_class,student_depart,gender,phone_number) VALUES(%s,%s,%s,%s,%s)",(s_name,s_class,s_dep,s_gender, s_pho))
+        conn.commit()
+        print("Student Data Add Successfully.")
+    except Exception as e:
+        print("Student Data not Added", e)
+        
 def View_Student():
-    pass
+    cur.execute("SELECT * FROM Student")
+    for user in cur.fetchall():
+        print(user)
+        
 
 def Update_Student():
     pass
@@ -34,16 +45,22 @@ def main():
         print("2. View Student:")
         print("3. Update Student:")
         print("4. Delete Student:")
-        print("5. Delete Student:")
+        print("5. Exit:")
         
         
         # User Choice
-        choice = input("Enter Your Choice(1-5)")
+        choice = input("\n Enter Your Choice(1-5): ")
         
         # Building logic
         match choice:
             case '1':
-                 Add_Student()
+                 
+                 s_name = input("Enter Student Name: ")
+                 s_class = input("Enter Student Class: ")
+                 s_dept = input("Enter Student Department: ")
+                 s_gender = input("Enter Student Gender: ")
+                 s_phone = input("Enter Student Phone Number: ")
+                 Add_Student(s_name,s_class,s_dept,s_gender,s_phone)
                 
             case '2':
                  View_Student()
