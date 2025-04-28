@@ -16,7 +16,7 @@ cur.execute('''
         phone_number VARCHAR(255) NOT NULL
     )
 ''')
-
+# Add Student Information
 def Add_Student(s_name,s_class,s_dep,s_gender, s_pho):
     try:
         cur.execute("INSERT INTO Student (student_name,student_class,student_depart,gender,phone_number) VALUES(%s,%s,%s,%s,%s)",(s_name,s_class,s_dep,s_gender, s_pho))
@@ -25,17 +25,30 @@ def Add_Student(s_name,s_class,s_dep,s_gender, s_pho):
     except Exception as e:
         print("Student Data not Added", e)
         
+# View student Information  
 def View_Student():
     cur.execute("SELECT * FROM Student")
     for user in cur.fetchall():
         print(user)
         
-
-def Update_Student():
-    pass
+# Update Student information
+def Update_Student(id,new_name,new_class,new_dep,new_gender,new_phone):
+    cur.execute("SELECT * FROM Student WHERE id=%s",(id))
+    id_fetch = cur.fetchone()
+    print(id_fetch)
+    try:
+        if id_fetch:
+            cur.execute("UPDATE Student SET student_name=%s,student_class=%s,student_depart=%s,gender=%s,phone_number=%s WHERE id=%s",(new_name,new_class,new_dep,new_gender,new_phone,id))
+            conn.commit()
+            print("Student Data Successfully Updated.")
+        else:
+            print("Data not Updated")
+    except Exception as e:
+        print("error", e)
 
 def Delete_Student():
     pass
+    
 
 # Main Programme
 def main():
@@ -66,7 +79,14 @@ def main():
                  View_Student()
                 
             case '3':
-                Update_Student()
+                
+                id= input("Enter ID: ")
+                s_name = input("Enter Student Name: ")
+                s_class = input("Enter Student Class: ")
+                s_dept = input("Enter Student Department: ")
+                s_gender = input("Enter Student Gender: ")
+                s_phone = input("Enter Student Phone Number: ")
+                Update_Student(id,s_name,s_class,s_dept,s_gender,s_phone)
                 
             case '4':
                 Delete_Student()
